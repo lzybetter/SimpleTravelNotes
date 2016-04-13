@@ -20,7 +20,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.2.1'
+    compile files('E:/file/android/SimpleTravleNotes/libs/baidumapapi_base_v3_7_3.jar')
+    compile files('E:/file/android/SimpleTravleNotes/libs/baidumapapi_map_v3_7_3.jar')
+    compile files('E:/file/android/SimpleTravleNotes/libs/baidumapapi_radar_v3_7_3.jar')
+    compile files('E:/file/android/SimpleTravleNotes/libs/baidumapapi_cloud_v3_7_3.jar')
+    compile files('E:/file/android/SimpleTravleNotes/libs/baidumapapi_search_v3_7_3.jar')
+    compile files('E:/file/android/SimpleTravleNotes/libs/baidumapapi_util_v3_7_3.jar')
 }

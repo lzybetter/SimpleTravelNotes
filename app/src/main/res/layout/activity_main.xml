@@ -21,4 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
         android:text="获取当前位置信息"/>
+
+    <Button
+        android:id="@+id/baiduMapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button"
+        android:text="在地图中显示出来"/>
 </RelativeLayout>
