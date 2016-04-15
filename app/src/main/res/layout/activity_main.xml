@@ -28,4 +28,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/button"
         android:text="在地图中显示出来"/>
+
+    <EditText
+        android:id="@+id/inputLatitude"
+        android:layout_below="@id/baiduMapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入维度"/>
+    <EditText
+        android:id="@+id/inputLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputLatitude"
+        android:hint="请输入经度"/>
+    <Button
+        android:id="@+id/savedLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputLongitude"
+        android:text="在百度地图中显示保存的地址"
+        />
 </RelativeLayout>

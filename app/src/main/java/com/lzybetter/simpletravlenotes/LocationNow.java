@@ -19,11 +19,12 @@ public class LocationNow {
     private double[] locationDouble = new double[2];
     private int test;
     private String provider;
+    private LocationManager locationManager;
 
 
     public double[] LocationNow(Activity activity){
 
-        LocationManager locationManager = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
         List<String> providerList= locationManager.getProviders(true);
         if(providerList.contains(LocationManager.NETWORK_PROVIDER)){
             provider = LocationManager.NETWORK_PROVIDER;
@@ -40,28 +41,7 @@ public class LocationNow {
             latitude = getLatitude(location);
             longitude = getLongitude(location);
         }
-        locationManager.requestLocationUpdates(provider, 5000, 1, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location){
-                latitude = getLatitude(location);
-                longitude = getLongitude(location);
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        });
+        locationManager.requestLocationUpdates(provider, 5000, 1, locationListener);
         locationDouble[0] = latitude;
         locationDouble[1] = longitude;
         return locationDouble;
@@ -71,9 +51,35 @@ public class LocationNow {
         return location.getLatitude();
     }
 
-    private double getLongitude(Location location){
-        return location.getLongitude();
+    private double getLongitude(Location location){ return location.getLongitude();}
+
+    public void removeListener(){
+        if(locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location){
+            latitude = getLatitude(location);
+            longitude = getLongitude(location);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
 
 }
