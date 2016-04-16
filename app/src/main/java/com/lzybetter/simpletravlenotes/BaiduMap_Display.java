@@ -6,9 +6,13 @@ import android.os.Bundle;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 
@@ -21,6 +25,8 @@ public class BaiduMap_Display extends Activity {
     private double longitude;
     private LocationNow locationNow;
     private boolean isNowLoation;
+    private Marker markerTest;
+    private BitmapDescriptor bitmapDescriptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +34,11 @@ public class BaiduMap_Display extends Activity {
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.baidumaplayout);
 
-        isNowLoation = false;
         Intent intent = getIntent();
-        isNowLoation = intent.getBooleanExtra("isNowLoation", false);
+        isNowLoation = intent.getBooleanExtra("isNowLocation", false);
 
         mapView=(MapView)findViewById(R.id.map_view);
         baiduMap = mapView.getMap();
-        baiduMap.setMyLocationEnabled(true);
         if(isNowLoation) {
             showMyLocation();
         }else {
@@ -46,6 +50,7 @@ public class BaiduMap_Display extends Activity {
     }
 
     private void showMyLocation(){
+        baiduMap.setMyLocationEnabled(true);
         locationNow = new LocationNow();
         location = locationNow.LocationNow(BaiduMap_Display.this);
         latitude = location[0];
@@ -68,11 +73,14 @@ public class BaiduMap_Display extends Activity {
         baiduMap.animateMapStatus(update);
         update = MapStatusUpdateFactory.zoomTo(12f);
         baiduMap.animateMapStatus(update);
-        MyLocationData.Builder locationBuilder = new MyLocationData.Builder();
-        locationBuilder.latitude(latitude);
-        locationBuilder.longitude(longitude);
-        MyLocationData locationData = locationBuilder.build();
-        baiduMap.setMyLocationData(locationData);
+        showMarker(savedLocation);
+    }
+
+    private void showMarker(LatLng saveLocation){
+            bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.foot);
+        MarkerOptions markerOptions = new MarkerOptions().position(saveLocation)
+                .icon(bitmapDescriptor).draggable(false).animateType(MarkerOptions.MarkerAnimateType.grow);
+        markerTest = (Marker)(baiduMap.addOverlay(markerOptions));
     }
 
     @Override
@@ -89,9 +97,19 @@ public class BaiduMap_Display extends Activity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        baiduMap.setMyLocationEnabled(false);
+        if(baiduMap.isBaiduHeatMapEnabled()){
+            baiduMap.setMyLocationEnabled(false);
+        }
         mapView.onDestroy();
-        locationNow.removeListener();
+        super.onDestroy();
+        baiduMap.clear();
+        markerTest = null;
+        if(bitmapDescriptor != null){
+            bitmapDescriptor.recycle();
+        }
+        if(locationNow != null){
+            locationNow.removeListener();
+        }
+
     }
 }

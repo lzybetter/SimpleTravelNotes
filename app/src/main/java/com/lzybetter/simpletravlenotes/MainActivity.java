@@ -57,8 +57,13 @@ public class MainActivity extends Activity {
                     Intent intent1 = new Intent(MainActivity.this, BaiduMap_Display.class);
                     String latitudeString = inputLatitude.getText().toString();
                     String longitudeString = inputLongitude.getText().toString();
-                    latitude = Double.valueOf(latitudeString);
-                    longtitude = Double.valueOf(longitudeString);
+                    if(latitudeString.equals("") || longitudeString.equals("")){
+                        latitude = 0;
+                        longtitude = 0;
+                    }else{
+                        latitude = Double.valueOf(latitudeString);
+                        longtitude = Double.valueOf(longitudeString);
+                    }
                     intent1.putExtra("isNowLocation", false);
                     intent1.putExtra("latitude", latitude);
                     intent1.putExtra("longitude", longtitude);
@@ -73,6 +78,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationNow.removeListener();
+        if(locationNow != null){
+            locationNow.removeListener();
+        }
     }
 }
