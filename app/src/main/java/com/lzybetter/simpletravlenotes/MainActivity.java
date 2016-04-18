@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    private Button button, baiduMapButton, saveLocationButton;
+    private Button button, baiduMapButton, saveLocationButton, saveLocationDisplay;
     private TextView locationTextView;
     private double latitude, longtitude;
     private LocationNow locationNow;
@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
         button = (Button)findViewById(R.id.button);
         baiduMapButton = (Button)findViewById(R.id.baiduMapButton);
         saveLocationButton = (Button)findViewById(R.id.savedLocationButton);
+        saveLocationDisplay = (Button)findViewById(R.id.savedLocationDisplay);
         inputLatitude = (EditText)findViewById(R.id.inputLatitude);
         inputLongitude = (EditText)findViewById(R.id.inputLongitude);
 
@@ -34,6 +35,7 @@ public class MainActivity extends Activity {
         button.setOnClickListener(buttonListener);
         baiduMapButton.setOnClickListener(buttonListener);
         saveLocationButton.setOnClickListener(buttonListener);
+        saveLocationDisplay.setOnClickListener(buttonListener);
     }
 
     class ButtonListener implements View.OnClickListener{
@@ -69,6 +71,9 @@ public class MainActivity extends Activity {
                     intent1.putExtra("longitude", longtitude);
                     startActivity(intent1);
                     break;
+                case R.id.savedLocationDisplay:
+                    Intent intent2 = new Intent(MainActivity.this, SavedLocation_Display.class);
+                    startActivity(intent2);
                 default:
                     break;
             }

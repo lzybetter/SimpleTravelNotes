@@ -48,4 +48,10 @@
         android:layout_below="@id/inputLongitude"
         android:text="在百度地图中显示保存的地址"
         />
+    <Button
+        android:id="@+id/savedLocationDisplay"
+        android:layout_below="@id/savedLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示已储存的地址"/>
 </RelativeLayout>
