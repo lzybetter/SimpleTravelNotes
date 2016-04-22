@@ -59,6 +59,7 @@ public class LocationNow {
         }
     }
 
+
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location){

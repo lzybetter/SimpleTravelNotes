@@ -1,21 +1,39 @@
 package com.lzybetter.simpletravlenotes;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 
 public class MainActivity extends Activity {
 
-    private Button button, baiduMapButton, saveLocationButton, saveLocationDisplay;
+    private final static int SHOW_LOCATION_NAME = 1;
+
+    private Button button, baiduMapButton, saveLocationButton;
+    private Button  saveButton,readButton,pictureButton;
     private TextView locationTextView;
+    private ImageView imageView;
     private double latitude, longtitude;
     private LocationNow locationNow;
-    private EditText inputLatitude, inputLongitude;
+    private EditText inputLatitude, inputLongitude, inputSaveLocationName, inputLocationDescribe;
+    private SaveLocationDatabaseHelper saveLocationDatabaseHelper;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,19 +41,27 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        saveLocationDatabaseHelper = new SaveLocationDatabaseHelper(this, "SaveLocation.db", null, 5);
         locationTextView = (TextView)findViewById(R.id.textView);
         button = (Button)findViewById(R.id.button);
         baiduMapButton = (Button)findViewById(R.id.baiduMapButton);
         saveLocationButton = (Button)findViewById(R.id.savedLocationButton);
-        saveLocationDisplay = (Button)findViewById(R.id.savedLocationDisplay);
+        saveButton = (Button)findViewById(R.id.saveButton);
+        readButton = (Button)findViewById(R.id.readButton);
+        pictureButton = (Button)findViewById(R.id.pictureButton);
         inputLatitude = (EditText)findViewById(R.id.inputLatitude);
         inputLongitude = (EditText)findViewById(R.id.inputLongitude);
+        inputSaveLocationName = (EditText)findViewById(R.id.input_locationName) ;
+        inputLocationDescribe = (EditText)findViewById(R.id.input_locationDescribe);
+        imageView = (ImageView)findViewById(R.id.imageView);
 
         ButtonListener buttonListener = new ButtonListener();
         button.setOnClickListener(buttonListener);
         baiduMapButton.setOnClickListener(buttonListener);
         saveLocationButton.setOnClickListener(buttonListener);
-        saveLocationDisplay.setOnClickListener(buttonListener);
+        saveButton.setOnClickListener(buttonListener);
+        readButton.setOnClickListener(buttonListener);
+        pictureButton.setOnClickListener(buttonListener);
     }
 
     class ButtonListener implements View.OnClickListener{
@@ -71,9 +97,21 @@ public class MainActivity extends Activity {
                     intent1.putExtra("longitude", longtitude);
                     startActivity(intent1);
                     break;
-                case R.id.savedLocationDisplay:
+                case R.id.saveButton:
+                    locationNow = new LocationNow();
+                    double[] location2 = locationNow.LocationNow(MainActivity.this);
+                    String name = inputSaveLocationName.getText().toString();
+                    String describe = inputLocationDescribe.getText().toString();
+                    Save_and_Read.Save(saveLocationDatabaseHelper,location2,name,describe);
+                    break;
+                case R.id.readButton:
                     Intent intent2 = new Intent(MainActivity.this, SavedLocation_Display.class);
                     startActivity(intent2);
+                    break;
+                case R.id.pictureButton:
+                    String pictureAddress = Save_and_Read.savePicture(MainActivity.this, MainActivity.this);
+
+                    break;
                 default:
                     break;
             }

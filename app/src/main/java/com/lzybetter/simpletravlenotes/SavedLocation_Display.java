@@ -1,6 +1,10 @@
 package com.lzybetter.simpletravlenotes;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -15,26 +19,28 @@ public class SavedLocation_Display extends Activity {
 
     private ListView listView;
     private SimpleAdapter simpleAdapter;
-
+    List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.savedlocation_display);
 
         listView = (ListView)findViewById(R.id.savedLocationList);
+        Cursor cursor = Save_and_Read.Read(this);
 
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("saveLocationName", "TestLocation1");
-        map.put("saveLocationDescribe", "TestDescribe1");
-        map.put("saveLocationPicture", R.drawable.testpicture1);
-        list.add(map);
+        if(cursor.moveToFirst()){
+            do{
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String describe = cursor.getString(cursor.getColumnIndex("describe"));
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("saveLocationName", name);
+                map.put("saveLocationDescribe", describe);
+                map.put("saveLocationPicture", R.drawable.testpicture1);
+                list.add(map);
+            }while(cursor.moveToNext());
+        }
 
-        map = new HashMap<String, Object>();
-        map.put("saveLocationName", "TestLocation2");
-        map.put("saveLocationDescribe", "TestDescribe2");
-        map.put("saveLocationPicture", R.drawable.testpicture2);
-        list.add(map);
+        cursor.close();
 
         simpleAdapter = new SimpleAdapter(this, list, R.layout.savelocationlist,
                 new String[] {"saveLocationName","saveLocationDescribe","saveLocationPicture"},
