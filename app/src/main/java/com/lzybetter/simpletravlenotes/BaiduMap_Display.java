@@ -3,6 +3,10 @@ package com.lzybetter.simpletravlenotes;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
@@ -110,6 +114,25 @@ public class BaiduMap_Display extends Activity {
         if(locationNow != null){
             locationNow.removeListener();
         }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(isNowLoation){
+            menu.add(Menu.NONE, Menu.FIRST + 1, 1, "保存当前地址");
+        }else{
+            menu.add(Menu.NONE, Menu.FIRST + 2, 1, "编辑当前地址");
+            menu.add(Menu.NONE, Menu.FIRST + 3, 2, "删除当前地址");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case Menu.FIRST + 1:
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

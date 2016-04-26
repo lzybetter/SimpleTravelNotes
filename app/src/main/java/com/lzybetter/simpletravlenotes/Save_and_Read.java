@@ -21,7 +21,7 @@ public class Save_and_Read {
 
 
     public static void Save(SaveLocationDatabaseHelper saveLocationDatabaseHelper,
-    double[] location, String name, String describe){
+    double[] location, String name, String describe, String pictureAddress){
         SQLiteDatabase db = saveLocationDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         double latitude = location[0];
@@ -30,6 +30,7 @@ public class Save_and_Read {
         values.put("latitude", latitude);
         values.put("longitude", longtitude);
         values.put("describe", describe);
+        values.put("pictureAddress", pictureAddress);
         db.insert("Savedlocation", null, values);
     }
 
@@ -40,33 +41,5 @@ public class Save_and_Read {
         Cursor cursor = db.query("Savedlocation",null, null, null, null, null, null);
         return cursor;
     }
-
-    public static String savePicture(Context context, Activity activity){
-        Uri imageUri;
-        int nameNumber = (int)Math.random()*900000+100000;
-        String pictureName = "location_Picture" + "_" + nameNumber + ".jpg";
-        String address = Environment.getExternalStorageDirectory().getAbsolutePath() + "/simpletravlenots/";
-        String pictureAddress = address + pictureName;
-        File destDir = new File(address);
-        if (!destDir.exists()) {
-            destDir.mkdirs();
-        }
-        File outputImage = new File(address, pictureName);
-        try {
-            if(outputImage.exists()){
-                outputImage.delete();
-            }
-            outputImage.createNewFile();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        imageUri = Uri.fromFile(outputImage);
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        context.startActivity(intent);
-        return pictureAddress;
-    }
-
-
 
 }

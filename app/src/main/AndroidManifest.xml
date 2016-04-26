@@ -37,6 +37,7 @@
         </activity>
         <activity android:name=".BaiduMap_Display" />
         <activity android:name=".SavedLocation_Display" />
+        <activity android:name=".currentLocationEdit"></activity>
     </application>
 
 </manifest>

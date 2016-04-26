@@ -15,7 +15,8 @@ public class SaveLocationDatabaseHelper extends SQLiteOpenHelper{
             + "name text, "
             + "latitude real, "
             + "longitude real, "
-            + "describe text )";
+            + "describe text, "
+            + "pictureAddress text)";
 
     private Context mContext;
 
