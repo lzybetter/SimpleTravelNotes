@@ -131,7 +131,9 @@ public class BaiduMap_Display extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case Menu.FIRST + 1:
-
+                Intent intent = new Intent(BaiduMap_Display.this, currentLocationEdit.class);
+                intent.putExtra("location",location);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

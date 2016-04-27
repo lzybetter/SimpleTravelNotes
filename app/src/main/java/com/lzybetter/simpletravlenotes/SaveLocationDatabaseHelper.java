@@ -35,6 +35,5 @@ public class SaveLocationDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_SAVELOCATION);
-        Toast.makeText(mContext, "Create succeded", Toast.LENGTH_SHORT).show();
     }
 }

@@ -37,9 +37,15 @@ public class Save_and_Read {
     public static Cursor Read(Context context){
         String packageName =  context.getPackageName();
         String DB_Path = "/data/data/" + packageName + "/databases/SaveLocation.db";
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DB_Path, null);
-        Cursor cursor = db.query("Savedlocation",null, null, null, null, null, null);
-        return cursor;
+        File dir = new File(DB_Path);
+        if(dir.exists()){
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DB_Path, null);
+            Cursor cursor = db.query("Savedlocation",null, null, null, null, null, null);
+            return cursor;
+        }else{
+            return  null;
+        }
+
     }
 
 }
