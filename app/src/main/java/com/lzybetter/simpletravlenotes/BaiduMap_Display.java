@@ -31,6 +31,7 @@ public class BaiduMap_Display extends Activity {
     private boolean isNowLoation;
     private Marker markerTest;
     private BitmapDescriptor bitmapDescriptor;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class BaiduMap_Display extends Activity {
         }else {
             latitude = intent.getDoubleExtra("latitude",0);
             longitude = intent.getDoubleExtra("longtitude",0);
+            position = intent.getIntExtra("position",0);
             showSavedLocation(latitude, longitude);
         }
 
@@ -132,8 +134,19 @@ public class BaiduMap_Display extends Activity {
         switch(item.getItemId()){
             case Menu.FIRST + 1:
                 Intent intent = new Intent(BaiduMap_Display.this, currentLocationEdit.class);
-                intent.putExtra("location",location);
+                intent.putExtra("isCurrentLocation",true);
                 startActivity(intent);
+                break;
+            case Menu.FIRST + 2:
+                Intent intent1 = new Intent(BaiduMap_Display.this, currentLocationEdit.class);
+                intent1.putExtra("isCurrentLocation",false);
+                intent1.putExtra("position",position);
+                intent1.putExtra("latitude", latitude);
+                intent1.putExtra("longitude",longitude);
+                startActivity(intent1);
+                break;
+            case Menu.FIRST + 3:
+
         }
         return super.onOptionsItemSelected(item);
     }

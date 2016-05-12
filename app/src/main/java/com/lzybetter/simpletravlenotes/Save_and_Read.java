@@ -34,18 +34,46 @@ public class Save_and_Read {
         db.insert("Savedlocation", null, values);
     }
 
-    public static Cursor Read(Context context){
+    public static Cursor Read(Context context, int position, boolean isAll){
         String packageName =  context.getPackageName();
         String DB_Path = "/data/data/" + packageName + "/databases/SaveLocation.db";
         File dir = new File(DB_Path);
         if(dir.exists()){
             SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DB_Path, null);
-            Cursor cursor = db.query("Savedlocation",null, null, null, null, null, null);
-            return cursor;
+            if(isAll){
+                Cursor cursor = db.query("Savedlocation",null, null, null, null, null, null);
+                return cursor;
+            }else {
+                String selection = "id = ?";
+                String[] selectionArgs =  {"" + position};
+                Cursor cursor = db.query("Savedlocation", null, selection , selectionArgs, null, null, null);
+                return cursor;
+            }
         }else{
             return  null;
         }
 
+    }
+
+    public static boolean Update(Context context,String name, String describe, String pictureAddress){
+        boolean isSu = false;
+        String packageName =  context.getPackageName();
+        String DB_Path = "/data/data/" + packageName + "/databases/SaveLocation.db";
+        File dir = new File(DB_Path);
+        if(dir.exists()){
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DB_Path, null);
+            ContentValues values = new ContentValues();
+            values.put("name", name);
+            db.update("Savedlocation",values,"name=?",new String[] {"name"});
+            values.clear();
+            values.put("describe",describe);
+            db.update("Savedlocation",values,"name=?",new String[] {"describe"});
+            values.clear();
+            values.put("pictureAddress",pictureAddress);
+            db.update("Savedlocation",values,"name=?",new String[] {"pictureAddres"});
+            isSu = true;
+        }
+        return isSu;
     }
 
 }

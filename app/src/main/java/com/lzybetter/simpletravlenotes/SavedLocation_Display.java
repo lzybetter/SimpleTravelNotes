@@ -10,8 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -32,6 +34,7 @@ public class SavedLocation_Display extends Activity {
     private SimpleAdapter simpleAdapter;
     List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
     private String pictureAddress;
+    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class SavedLocation_Display extends Activity {
         listView = (ListView)findViewById(R.id.savedLocationList);
         pictureAddress = "There is no picture";
 
-        Cursor cursor = Save_and_Read.Read(this);
+        cursor = Save_and_Read.Read(this, 0, true);
         if(cursor == null){
             String noName = "没有储存的地址";
             String noDescribe = "没有储存的描述";
@@ -93,5 +96,18 @@ public class SavedLocation_Display extends Activity {
             }
         });
         listView.setAdapter(simpleAdapter);
-    }
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    if(cursor != null){
+                        Intent intent = new Intent(SavedLocation_Display.this, contextDisplay.class);
+                        intent.putExtra("position",position + 1);
+                        intent.putExtra("isDisplay", true);
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
+
+
 }
